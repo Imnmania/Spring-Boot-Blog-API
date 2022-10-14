@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -66,5 +67,16 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
 		
 	}
+	
 
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<Map<String, String>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+		
+		Map<String, String> res = new HashMap<>();
+//		res.put("message", "there is a mismatch in data type");
+		res.put("message", ex.getMessage().split(":")[0].strip());
+		
+		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		
+	}
 }
