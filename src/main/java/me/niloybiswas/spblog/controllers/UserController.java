@@ -3,6 +3,8 @@ package me.niloybiswas.spblog.controllers;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class UserController {
 	
 	// Create User
 	@PostMapping("/create")
-	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
 		
 		UserDTO createdUserDTO = this.userService.createUser(userDTO);
 		return new ResponseEntity<UserDTO>(createdUserDTO, HttpStatus.CREATED);
@@ -37,7 +39,7 @@ public class UserController {
 	
 	// Update User
 	@PutMapping("/update/{userId}")
-	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable(name = "userId") BigInteger userId) {
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "userId") BigInteger userId) {
 		// if the path variable and function params have different name, use custom name with () after @Pathvariable
 		
 		UserDTO updatedUserDTO = this.userService.updateUser(userDTO, userId);
