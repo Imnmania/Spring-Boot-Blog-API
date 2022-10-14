@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepo userRepo;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
@@ -83,6 +87,8 @@ public class UserServiceImpl implements UserService {
 	
 	// Converting dto to entity
 	private User dtoToUser(UserDTO userDTO) {
+		/* conversion raw */
+		/*
 		User user = new User();
 		user.setId(userDTO.getId());
 		user.setName(userDTO.getName());
@@ -90,16 +96,27 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userDTO.getEmail());
 		user.setAbout(userDTO.getAbout());
 		return user;
+		*/
+		
+		/* conversion with model mapper */
+		User user = this.modelMapper.map(userDTO, User.class);
+		return user;
 	}
 	
 	// Converting entity to dto
 	private UserDTO userToDto(User user) {
+		/*
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(user.getId());
 		userDTO.setName(user.getName());
 		userDTO.setPassword(user.getPassword());
 		userDTO.setEmail(user.getEmail());
 		userDTO.setAbout(user.getAbout());
+		return userDTO;
+		*/
+		
+		/* conversion with model mapper */
+		UserDTO userDTO = this.modelMapper.map(user, UserDTO.class);
 		return userDTO;
 	}
 
