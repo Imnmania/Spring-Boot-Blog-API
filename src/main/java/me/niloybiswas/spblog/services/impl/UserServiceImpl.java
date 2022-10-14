@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	public UserDTO updateUser(UserDTO userDTO, BigInteger userId) {
 		
 		User user = this.userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User ", "ID => ", userId));
+				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
 		user.setName(userDTO.getName());
 		user.setEmail(userDTO.getEmail());
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 	public UserDTO getUserById(BigInteger userId) {
 		
 		User user = this.userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User ", "ID => ", userId));
+				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
 		return this.userToDto(user);
 		
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(BigInteger userId) {
 		
 		User user = this.userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User ", "ID => ", userId));
+				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
 		this.userRepo.delete(user);
 		
