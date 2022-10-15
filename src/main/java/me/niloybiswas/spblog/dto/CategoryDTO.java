@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryDTO {
 	
-	private BigInteger categoryId;
+	private BigInteger id;
 
 	@NotEmpty
 	@Size(min = 4)

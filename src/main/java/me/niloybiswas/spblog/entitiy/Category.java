@@ -27,11 +27,10 @@ public class Category {
 	@Column(name = "title", nullable = false)
 	private String categoryTitle;
 	
-	@Column(name = "description", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'John Snow'")
+	@Column(name = "description", nullable = false)
 	private String categoryDescription;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Post> posts = new ArrayList<>();
 
-	
 }

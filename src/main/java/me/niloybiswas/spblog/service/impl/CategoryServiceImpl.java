@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService{
 	public CategoryDTO createCategory(CategoryDTO categoryDTO) {
 		Category category = modelMapper.map(categoryDTO, Category.class);
 		Category newCategory = categoryRepo.save(category);
-
 		return modelMapper.map(newCategory, CategoryDTO.class);
 	}
 
