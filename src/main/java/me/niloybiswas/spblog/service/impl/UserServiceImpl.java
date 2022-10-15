@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.services.impl;
+package me.niloybiswas.spblog.service.impl;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -8,11 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import me.niloybiswas.spblog.entities.User;
-import me.niloybiswas.spblog.exceptions.ResourceNotFoundException;
-import me.niloybiswas.spblog.payloads.UserDTO;
-import me.niloybiswas.spblog.repositories.UserRepo;
-import me.niloybiswas.spblog.services.UserService;
+import me.niloybiswas.spblog.entitiy.User;
+import me.niloybiswas.spblog.exception.ResourceNotFoundException;
+import me.niloybiswas.spblog.dto.UserDTO;
+import me.niloybiswas.spblog.repository.UserRepo;
+import me.niloybiswas.spblog.service.UserService;
 
 
 @Service
@@ -20,22 +20,20 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepo userRepo;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
-		
 		User user= this.dtoToUser(userDTO);
 		User savedUser = this.userRepo.save(user);
+
 		return this.userToDto(savedUser);
-		
 	}
 
 	@Override
 	public UserDTO updateUser(UserDTO userDTO, BigInteger userId) {
-		
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
@@ -48,22 +46,18 @@ public class UserServiceImpl implements UserService {
 		UserDTO updatedUserDTO = this.userToDto(updatedUser);
 		
 		return updatedUserDTO;
-		
 	}
 
 	@Override
 	public UserDTO getUserById(BigInteger userId) {
-		
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
 		return this.userToDto(user);
-		
 	}
 
 	@Override
 	public List<UserDTO> getAllUsers() {
-		
 		List<User> users = this.userRepo.findAll();
 		
 		List<UserDTO> userDTOList = users.stream()
@@ -71,17 +65,14 @@ public class UserServiceImpl implements UserService {
 				.collect(Collectors.toList());
 		
 		return userDTOList;
-	
 	}
 
 	@Override
 	public void deleteUser(BigInteger userId) {
-		
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
 		this.userRepo.delete(user);
-		
 	}
 	
 	

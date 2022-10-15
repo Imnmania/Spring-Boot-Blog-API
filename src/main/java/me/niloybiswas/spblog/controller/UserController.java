@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.controllers;
+package me.niloybiswas.spblog.controller;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.niloybiswas.spblog.payloads.ApiResponseDTO;
-import me.niloybiswas.spblog.payloads.UserDTO;
-import me.niloybiswas.spblog.services.UserService;
+import me.niloybiswas.spblog.dto.ApiResponseDTO;
+import me.niloybiswas.spblog.dto.UserDTO;
+import me.niloybiswas.spblog.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")

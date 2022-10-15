@@ -1,8 +1,9 @@
-package me.niloybiswas.spblog.exceptions;
+package me.niloybiswas.spblog.exception;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import me.niloybiswas.spblog.payloads.ApiResponseDTO;
+import me.niloybiswas.spblog.dto.ApiResponseDTO;
 
 
 @RestControllerAdvice
@@ -49,7 +50,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
 		
 		Map<String, String> res = new HashMap<>();
-		res.put("message", ex.getMessage().toString().split(":")[1].strip());
+		res.put("message", ex.getMessage().toString().split(":")[0].strip());
 //		System.out.println(ex.getMessage());
 		
 		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
@@ -73,10 +74,24 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Map<String, String>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
 		
 		Map<String, String> res = new HashMap<>();
-//		res.put("message", "there is a mismatch in data type");
+//		res.put("message", "please check your payload data");
 		res.put("message", ex.getMessage().split(":")[0].strip());
 		
 		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
 		
 	}
+	
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+		
+		Map<String, String> res = new HashMap<>();
+//		res.put("message", "violated database constraint");
+		res.put("message", "something is missing, violated db constraint");
+//		res.put("message", ex.getMessage().split(":")[0].strip());
+		
+		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		
+	}
+	
 }

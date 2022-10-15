@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.payloads;
+package me.niloybiswas.spblog.dto;
 
 import java.math.BigInteger;
 

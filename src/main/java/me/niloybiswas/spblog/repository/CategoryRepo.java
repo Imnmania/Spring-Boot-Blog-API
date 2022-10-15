@@ -1,11 +1,11 @@
-package me.niloybiswas.spblog.repositories;
+package me.niloybiswas.spblog.repository;
 
 import java.math.BigInteger;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import me.niloybiswas.spblog.entities.Category;
+import me.niloybiswas.spblog.entitiy.Category;
 
 
 @Repository

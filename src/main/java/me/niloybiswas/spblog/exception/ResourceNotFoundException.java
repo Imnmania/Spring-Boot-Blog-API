@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.exceptions;
+package me.niloybiswas.spblog.exception;
 
 import java.math.BigInteger;
 

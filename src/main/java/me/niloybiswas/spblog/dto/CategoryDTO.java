@@ -1,8 +1,9 @@
-package me.niloybiswas.spblog.payloads;
+package me.niloybiswas.spblog.dto;
 
 import java.math.BigInteger;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +15,13 @@ import lombok.Setter;
 public class CategoryDTO {
 	
 	private BigInteger categoryId;
-	
+
 	@NotEmpty
+	@Size(min = 4)
 	private String categoryTitle;
-	
+
+	@NotEmpty
+	@Size(min = 10)
 	private String categoryDescription;
 
 }
