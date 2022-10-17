@@ -21,8 +21,8 @@ import lombok.Setter;
 public class Category {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private BigInteger id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@Column(name = "title", nullable = false)
 	private String categoryTitle;
@@ -30,7 +30,8 @@ public class Category {
 	@Column(name = "description", nullable = false)
 	private String categoryDescription;
 
-	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Post> posts = new ArrayList<>();
 
 }

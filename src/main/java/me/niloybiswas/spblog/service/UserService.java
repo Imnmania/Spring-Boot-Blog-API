@@ -11,15 +11,15 @@ public interface UserService {
 	UserDTO createUser(UserDTO userDTO);
 
 	// update
-	UserDTO updateUser(UserDTO userDTO, BigInteger userId);
+	UserDTO updateUser(UserDTO userDTO, Long userId);
 
 	// get by id
-	UserDTO getUserById(BigInteger userId);
+	UserDTO getUserById(Long userId);
 
 	// get all
 	List<UserDTO> getAllUsers();
 
 	// delete
-	void deleteUser(BigInteger userId);
+	void deleteUser(Long userId);
 
 }

@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 public class UserDTO {
 	
-	private BigInteger id;
+	private Long id;
 	
 	@NotEmpty
 	@Size(min = 3, message = "username must be at least 3 characters long")

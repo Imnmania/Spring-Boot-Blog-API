@@ -39,7 +39,7 @@ public class UserController {
 	
 	// Update User
 	@PutMapping("/update/{userId}")
-	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "userId") BigInteger userId) {
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "userId") Long userId) {
 		// if the path variable and function params have different name, use custom name with () after @Pathvariable
 		
 		UserDTO updatedUserDTO = this.userService.updateUser(userDTO, userId);
@@ -49,7 +49,7 @@ public class UserController {
 	
 	// Delete User
 	@DeleteMapping("/delete/{userId}")
-	public ResponseEntity<ApiResponseDTO> deleteUser(@PathVariable BigInteger userId) {
+	public ResponseEntity<ApiResponseDTO> deleteUser(@PathVariable Long userId) {
 		
 		this.userService.deleteUser(userId);
 //		return new ResponseEntity<?>(Map.of("message", "User deleted successfully!"), HttpStatus.OK);
@@ -68,7 +68,7 @@ public class UserController {
 	
 	// Get User by ID
 	@GetMapping("/getById/{userId}")
-	public ResponseEntity<UserDTO> getUserById(@PathVariable BigInteger userId) {
+	public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
 			
 		return new ResponseEntity<UserDTO>(this.userService.getUserById(userId), HttpStatus.OK);
 			

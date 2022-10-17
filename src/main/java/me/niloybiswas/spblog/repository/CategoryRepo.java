@@ -9,6 +9,6 @@ import me.niloybiswas.spblog.entitiy.Category;
 
 
 @Repository
-public interface CategoryRepo extends JpaRepository<Category, BigInteger>{
+public interface CategoryRepo extends JpaRepository<Category, Long>{
 
 }

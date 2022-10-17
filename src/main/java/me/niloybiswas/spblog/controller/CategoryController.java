@@ -37,29 +37,29 @@ public class CategoryController {
 	
 	// update
 	@PutMapping("/update/{id}")
-	public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable(name = "id") BigInteger categoryId) {
+	public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable(name = "id") Long categoryId) {
 		CategoryDTO updatedCategoryDTO = categoryService.updateCategory(categoryDTO, categoryId);
-		return new ResponseEntity<CategoryDTO>(updatedCategoryDTO, HttpStatus.OK);
+		return new ResponseEntity<>(updatedCategoryDTO, HttpStatus.OK);
 	}
 	
 	// delete
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<ApiResponseDTO> deleteCategory(@PathVariable(name = "id") BigInteger categoryId){
+	public ResponseEntity<ApiResponseDTO> deleteCategory(@PathVariable(name = "id") Long categoryId){
 		categoryService.deleteCategory(categoryId);
-		return new ResponseEntity<ApiResponseDTO>(new ApiResponseDTO("category deleted successfully!", true), HttpStatus.OK);
+		return new ResponseEntity<>(new ApiResponseDTO("category deleted successfully!", true), HttpStatus.OK);
 	}
 	
 	// get all
 	@GetMapping("/getAll")
 	public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-		return new ResponseEntity<List<CategoryDTO>>(categoryService.getAllCategories(), HttpStatus.OK);
+		return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
 	}
 	
 	
 	// get by id
 	@GetMapping("/getById/{id}")
-	public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable(name = "id") BigInteger categoryId){
-		return new ResponseEntity<CategoryDTO>(categoryService.getCategoryById(categoryId), HttpStatus.OK);
+	public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable(name = "id") Long categoryId){
+		return new ResponseEntity<>(categoryService.getCategoryById(categoryId), HttpStatus.OK);
 	}
 
 }

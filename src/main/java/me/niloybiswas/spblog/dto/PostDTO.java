@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import java.math.BigInteger;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Getter
@@ -13,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PostDTO {
 
-    private BigInteger id;
+    private Long id;
 
     @NotEmpty
     private String title;
@@ -23,7 +24,7 @@ public class PostDTO {
 
     private String imageName = "default.png";
 
-    private Date createdDate;
+    private OffsetDateTime createdDate;
 
     private CategoryDTO category;
 

@@ -1,6 +1,5 @@
-package me.niloybiswas.spblog.service.impl;
+package me.niloybiswas.spblog.serviceImpl;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO updateUser(UserDTO userDTO, BigInteger userId) {
+	public UserDTO updateUser(UserDTO userDTO, Long userId) {
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO getUserById(BigInteger userId) {
+	public UserDTO getUserById(Long userId) {
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(BigInteger userId) {
+	public void deleteUser(Long userId) {
 		User user = this.userRepo.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
 		
@@ -90,8 +89,7 @@ public class UserServiceImpl implements UserService {
 		*/
 		
 		/* conversion with model mapper */
-		User user = this.modelMapper.map(userDTO, User.class);
-		return user;
+		return this.modelMapper.map(userDTO, User.class);
 	}
 	
 	// Converting entity to dto
@@ -107,8 +105,7 @@ public class UserServiceImpl implements UserService {
 		*/
 		
 		/* conversion with model mapper */
-		UserDTO userDTO = this.modelMapper.map(user, UserDTO.class);
-		return userDTO;
+		return this.modelMapper.map(user, UserDTO.class);
 	}
 
 }

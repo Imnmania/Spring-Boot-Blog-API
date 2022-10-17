@@ -1,8 +1,6 @@
-package me.niloybiswas.spblog.service.impl;
+package me.niloybiswas.spblog.serviceImpl;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -33,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public CategoryDTO updateCategory(CategoryDTO categoryDTO, BigInteger categoryId) {
+	public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId) {
 		Category category = categoryRepo.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
 		
@@ -45,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public void deleteCategory(BigInteger categoryId) {
+	public void deleteCategory(Long categoryId) {
 		Category category = categoryRepo.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
 
@@ -63,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public CategoryDTO getCategoryById(BigInteger categoryId) {
+	public CategoryDTO getCategoryById(Long categoryId) {
 		Category category = categoryRepo.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
 

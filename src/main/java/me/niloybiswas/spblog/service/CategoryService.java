@@ -11,15 +11,15 @@ public interface CategoryService {
 	CategoryDTO createCategory(CategoryDTO categoryDTO);
 	
 	// Update
-	CategoryDTO updateCategory(CategoryDTO categoryDTO, BigInteger categoryId);
+	CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
 	
 	// Delete
-	void deleteCategory(BigInteger categoryId);
+	void deleteCategory(Long categoryId);
 	
 	// Get All
 	List<CategoryDTO> getAllCategories();
 	
 	// Get by ID
-	CategoryDTO getCategoryById(BigInteger categoryId);
+	CategoryDTO getCategoryById(Long categoryId);
 	
 }
