@@ -23,10 +23,18 @@ public interface PostService {
     PostDTO getPostById(Long postId);
 
     // get all by category
-    List<PostDTO> getPostsByCategory(Long categoryId);
+    PaginatedResponseDTO<List<PostDTO>> getPostsByCategory(
+            Integer pageNumber,
+            Integer pageSize,
+            Long categoryId
+    );
 
     // get all by user
-    List<PostDTO> getPostsByUser(Long userId);
+    PaginatedResponseDTO<List<PostDTO>> getPostsByUser(
+            Integer pageNumber,
+            Integer pageSize,
+            Long userId
+    );
 
     // search
     List<PostDTO> searchPosts(String keyword);

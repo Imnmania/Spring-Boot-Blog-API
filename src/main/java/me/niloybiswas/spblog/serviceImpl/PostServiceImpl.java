@@ -86,6 +86,7 @@ public class PostServiceImpl implements PostService {
 
         if (pageNumber > 0) {
             int newPageNumber = pageNumber - 1;
+            // Pageable object helps us with generating pagination data
             Pageable p = PageRequest.of(newPageNumber, pageSize);
             Page<Post> pagePost = postRepo.findAll(p);
             List<Post> allPosts = pagePost.getContent();
@@ -101,7 +102,7 @@ public class PostServiceImpl implements PostService {
             postResponse.setTotalPages(pagePost.getTotalPages());
             postResponse.setLastPage(pagePost.isLast());
         } else {
-            throw new ResourceNotFoundException("Posts", "pagenumber", Long.valueOf(pageNumber));
+            throw new ResourceNotFoundException("Posts", "page number", Long.valueOf(pageNumber));
         }
 
         return postResponse;
@@ -115,28 +116,86 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getPostsByCategory(Long categoryId) {
+    public PaginatedResponseDTO<List<PostDTO>> getPostsByCategory(
+            Integer pageNumber,
+            Integer pageSize,
+            Long categoryId
+    ) {
         Category category = categoryRepo.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
+        /// Without pagination
+        /*
         List<Post> posts = postRepo.findByCategory(category);
-
         List<PostDTO> postDTOs = posts.stream()
                 .map(post -> modelMapper.map(post, PostDTO.class))
                 .collect(Collectors.toList());
-
         return postDTOs;
+        */
+        /// With pagination
+        PaginatedResponseDTO<List<PostDTO>> paginatedResponse = new PaginatedResponseDTO<>();
+
+        if (pageNumber > 0) {
+            int newPageNumber = pageNumber - 1;
+            Pageable p = PageRequest.of(newPageNumber, pageSize);
+            Page<Post> pagePosts = postRepo.findAllByCategory(category, p);
+            List<Post> posts = pagePosts.getContent();
+
+            List<PostDTO> postDTOs = posts.stream()
+                    .map(post -> modelMapper.map(post, PostDTO.class))
+                    .collect(Collectors.toList());
+
+            paginatedResponse.setData(postDTOs);
+            paginatedResponse.setPageSize(pagePosts.getSize());
+            paginatedResponse.setPageNumber(pagePosts.getNumber() + 1);
+            paginatedResponse.setTotalElements(pagePosts.getTotalElements());
+            paginatedResponse.setTotalPages(pagePosts.getTotalPages());
+            paginatedResponse.setLastPage(pagePosts.isLast());
+        } else {
+            throw new ResourceNotFoundException("Posts", "page number", Long.valueOf(pageNumber));
+        }
+
+        return paginatedResponse;
     }
 
     @Override
-    public List<PostDTO> getPostsByUser(Long userId) {
+    public PaginatedResponseDTO<List<PostDTO>> getPostsByUser(
+            Integer pageNumber,
+            Integer pageSize,
+            Long userId
+    ) {
         final User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
+        /// Without pagination
+        /*
         final List<Post> posts =  postRepo.findByUser(user);
         final List<PostDTO> postDTOs = posts.stream()
                 .map(post -> modelMapper.map(post, PostDTO.class))
                 .collect(Collectors.toList());
-
         return postDTOs;
+        */
+        /// With pagination
+        PaginatedResponseDTO<List<PostDTO>> paginatedResponse = new PaginatedResponseDTO<>();
+
+        if (pageNumber > 0) {
+            int newPageNumber = pageNumber - 1;
+            Pageable p = PageRequest.of(newPageNumber, pageSize);
+            Page<Post> pagePosts = postRepo.findAllByUser(user, p);
+            List<Post> posts = pagePosts.getContent();
+            List<PostDTO> postDTOs = posts.stream()
+                    .map(post -> modelMapper.map(post, PostDTO.class))
+                    .collect(Collectors.toList());
+
+            paginatedResponse.setData(postDTOs);
+            paginatedResponse.setPageSize(pagePosts.getSize());
+            paginatedResponse.setPageNumber(pagePosts.getNumber() + 1);
+            paginatedResponse.setTotalPages(pagePosts.getTotalPages());
+            paginatedResponse.setTotalElements(pagePosts.getTotalElements());
+            paginatedResponse.setLastPage(pagePosts.isLast());
+        } else {
+            throw new ResourceNotFoundException("Posts", "page number", Long.valueOf(pageNumber));
+        }
+
+        return paginatedResponse;
     }
 
     @Override

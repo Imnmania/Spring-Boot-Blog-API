@@ -39,7 +39,7 @@ public class PostController {
     @GetMapping("/getAll")
     public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllPosts(
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false)  Integer pageNumber
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber
     ) {
         PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getAllPosts(pageNumber, pageSize);
         return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
@@ -51,16 +51,24 @@ public class PostController {
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
-    @GetMapping("/getByUserId/{userId}")
-    public ResponseEntity<List<PostDTO>> getAllByUserId(@PathVariable Long userId) {
-        List<PostDTO> posts = postService.getPostsByUser(userId);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    @GetMapping("/getAllByUserId/{userId}")
+    public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllByUserId(
+            @PathVariable Long userId,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber
+    ) {
+        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByUser(pageNumber, pageSize, userId);
+        return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
     }
 
-    @GetMapping("/getByCategoryId/{categoryId}")
-    public ResponseEntity<List<PostDTO>> getAllByCategoryId(@PathVariable Long categoryId) {
-        List<PostDTO> posts = postService.getPostsByCategory(categoryId);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    @GetMapping("/getAllByCategoryId/{categoryId}")
+    public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllByCategoryId(
+            @PathVariable Long categoryId,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber
+    ) {
+        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByCategory(pageNumber, pageSize, categoryId);
+        return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
     }
 
 
