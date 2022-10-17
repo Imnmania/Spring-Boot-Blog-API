@@ -1,5 +1,6 @@
 package me.niloybiswas.spblog.service;
 
+import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
 import me.niloybiswas.spblog.dto.PostDTO;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface PostService {
     void deletePost(Long postId);
 
     // get all
-    List<PostDTO> getAllPosts();
+    PaginatedResponseDTO<List<PostDTO>> getAllPosts(Integer pageNumber, Integer PageSize);
 
     // get by id
     PostDTO getPostById(Long postId);

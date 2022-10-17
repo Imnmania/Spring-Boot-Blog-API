@@ -1,5 +1,6 @@
 package me.niloybiswas.spblog.serviceImpl;
 
+import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
 import me.niloybiswas.spblog.dto.PostDTO;
 import me.niloybiswas.spblog.entitiy.Category;
 import me.niloybiswas.spblog.entitiy.Post;
@@ -12,6 +13,9 @@ import me.niloybiswas.spblog.service.PostService;
 import me.niloybiswas.spblog.util.DateUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,7 +63,8 @@ public class PostServiceImpl implements PostService {
         post.setContent(postDTO.getContent());
         post.setImageName(postDTO.getImageName());
 
-        return modelMapper.map(post, PostDTO.class);
+        Post updatedPost = postRepo.save(post);
+        return modelMapper.map(updatedPost, PostDTO.class);
     }
 
     @Override
@@ -71,12 +76,35 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getAllPosts() {
+    public PaginatedResponseDTO<List<PostDTO>> getAllPosts(Integer pageNumber, Integer pageSize) {
+        /*
+        /// Without pagination
         List<Post> allPosts = postRepo.findAll();
-        List<PostDTO> allPostDTOs = allPosts.stream()
-                .map(post -> modelMapper.map(post, PostDTO.class))
-                .collect(Collectors.toList());
-        return allPostDTOs;
+        */
+        /// With pagination
+        PaginatedResponseDTO<List<PostDTO>> postResponse = new PaginatedResponseDTO<>();
+
+        if (pageNumber > 0) {
+            int newPageNumber = pageNumber - 1;
+            Pageable p = PageRequest.of(newPageNumber, pageSize);
+            Page<Post> pagePost = postRepo.findAll(p);
+            List<Post> allPosts = pagePost.getContent();
+
+            List<PostDTO> allPostDTOs = allPosts.stream()
+                    .map(post -> modelMapper.map(post, PostDTO.class))
+                    .collect(Collectors.toList());
+
+            postResponse.setData(allPostDTOs);
+            postResponse.setPageNumber(pagePost.getNumber() + 1);
+            postResponse.setPageSize(pagePost.getSize());
+            postResponse.setTotalElements(pagePost.getTotalElements());
+            postResponse.setTotalPages(pagePost.getTotalPages());
+            postResponse.setLastPage(pagePost.isLast());
+        } else {
+            throw new ResourceNotFoundException("Posts", "pagenumber", Long.valueOf(pageNumber));
+        }
+
+        return postResponse;
     }
 
     @Override

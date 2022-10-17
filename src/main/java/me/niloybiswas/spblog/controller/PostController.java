@@ -1,6 +1,7 @@
 package me.niloybiswas.spblog.controller;
 
 import me.niloybiswas.spblog.dto.ApiResponseDTO;
+import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
 import me.niloybiswas.spblog.dto.PostDTO;
 import me.niloybiswas.spblog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,14 @@ public class PostController {
         return new ResponseEntity<>(new ApiResponseDTO("Successfully Deleted!", true), HttpStatus.OK);
     }
 
+    /// We are using query parameter to get those values which in spring boot is @RequestParam
     @GetMapping("/getAll")
-    public ResponseEntity<List<PostDTO>> getAllPosts() {
-        List<PostDTO> posts = postService.getAllPosts();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllPosts(
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false)  Integer pageNumber
+    ) {
+        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getAllPosts(pageNumber, pageSize);
+        return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
     }
 
     @GetMapping("/getById/{id}")

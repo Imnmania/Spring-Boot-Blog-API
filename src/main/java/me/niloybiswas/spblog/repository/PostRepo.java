@@ -18,7 +18,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
     List<Post> findByUser(User user);
     List<Post> findByCategory(Category category);
 
-    void delete(Post post);
+//    void delete(Post post);
 
     /// This is how you do raw query operation
 //    @Modifying
