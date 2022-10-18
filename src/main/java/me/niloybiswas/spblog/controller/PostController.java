@@ -4,15 +4,30 @@ import me.niloybiswas.spblog.config.AppConstants;
 import me.niloybiswas.spblog.dto.ApiResponseDTO;
 import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
 import me.niloybiswas.spblog.dto.PostDTO;
+import me.niloybiswas.spblog.service.FileService;
 import me.niloybiswas.spblog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -21,6 +36,12 @@ public class PostController {
     @Autowired
     @Qualifier("postServiceImpl")
     private PostService postService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private String path;
 
     @PostMapping("/create/{userId}/{categoryId}")
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO,
@@ -99,4 +120,60 @@ public class PostController {
         return new ResponseEntity<>(postDTOs, HttpStatus.OK);
     }
 
+    ///* File upload
+    @PostMapping("/image/upload/{postId}")
+    public ResponseEntity<PostDTO> uploadPostImage(
+            @PathVariable(name = "postId") Long postId,
+            @RequestParam(name = "image") MultipartFile image
+    ) throws IOException {
+
+        PostDTO post = postService.getPostById(postId);
+
+        String fileName = fileService.uploadImage(path, image);
+        post.setImageName(fileName);
+        PostDTO updatedPost = postService.updatePost(post, post.getId());
+
+        // test base64
+        String encodedBase64String = Base64.getEncoder().encodeToString(image.getBytes());
+
+        Base64.getDecoder().decode(encodedBase64String);
+
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+
+    }
+
+    ///* File download
+    @GetMapping(value = "/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadPostImage(
+            @PathVariable("imageName") String imageName,
+            HttpServletResponse response
+    ) throws IOException {
+
+        InputStream resource = fileService.getResource(path, imageName);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
+
+    }
+
+    ///* Base64 Image response
+    @GetMapping(value = "/base64image/{imageName}")
+    public ResponseEntity<HashMap<String, String>> downloadBase64Image(
+            @PathVariable("imageName") String imageName
+    ) throws IOException {
+
+        InputStream resource = fileService.getResource(path, imageName);
+        String s = Base64.getEncoder().encodeToString(resource.readAllBytes());
+        HashMap<String, String> newMap = new HashMap<>();
+        newMap.put("base64Image", s);
+
+        // test for saving base64
+//        byte[] decodedImage = Base64.getDecoder().decode(s);
+//        String filePath = path + File.separator + "Hello.jpg";
+//        InputStream inputStream = new ByteArrayInputStream(decodedImage);
+//
+//        Files.copy(inputStream, Paths.get(filePath));
+
+        return new ResponseEntity<>(newMap, HttpStatus.OK);
+
+    }
 }
