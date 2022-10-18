@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,7 +77,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PaginatedResponseDTO<List<PostDTO>> getAllPosts(Integer pageNumber, Integer pageSize) {
+    public PaginatedResponseDTO<List<PostDTO>> getAllPosts(
+            Integer pageNumber,
+            Integer pageSize,
+            String sortBy,
+            String sortDir
+    ) {
         /*
         /// Without pagination
         List<Post> allPosts = postRepo.findAll();
@@ -86,8 +92,16 @@ public class PostServiceImpl implements PostService {
 
         if (pageNumber > 0) {
             int newPageNumber = pageNumber - 1;
-            // Pageable object helps us with generating pagination data
-            Pageable p = PageRequest.of(newPageNumber, pageSize);
+
+            ///* setting up sorting order
+            Sort sort = sortDir.equalsIgnoreCase("desc")
+                    ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
+
+            ///* Pageable object helps us with generating pagination data
+//            Pageable p = PageRequest.of(newPageNumber, pageSize, Sort.by(sortBy));
+//            Pageable p = PageRequest.of(newPageNumber, pageSize, Sort.by(sortBy).descending());
+            Pageable p = PageRequest.of(newPageNumber, pageSize, sort);
             Page<Post> pagePost = postRepo.findAll(p);
             List<Post> allPosts = pagePost.getContent();
 

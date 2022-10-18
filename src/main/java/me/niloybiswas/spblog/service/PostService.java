@@ -17,7 +17,12 @@ public interface PostService {
     void deletePost(Long postId);
 
     // get all
-    PaginatedResponseDTO<List<PostDTO>> getAllPosts(Integer pageNumber, Integer PageSize);
+    PaginatedResponseDTO<List<PostDTO>> getAllPosts(
+            Integer pageNumber,
+            Integer PageSize,
+            String sortBy,
+            String sortDir
+    );
 
     // get by id
     PostDTO getPostById(Long postId);
