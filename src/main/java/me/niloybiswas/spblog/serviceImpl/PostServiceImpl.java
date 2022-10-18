@@ -92,6 +92,10 @@ public class PostServiceImpl implements PostService {
         /*
         /// Without pagination
         List<Post> allPosts = postRepo.findAll();
+        List<PostDTO> allPostDTOs = allPosts.stream()
+                    .map(post -> modelMapper.map(post, PostDTO.class))
+                    .collect(Collectors.toList());
+        return allPostDTOs;
         */
         /// With pagination
         PaginatedResponseDTO<List<PostDTO>> postResponse = new PaginatedResponseDTO<>();
