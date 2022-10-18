@@ -32,4 +32,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 
     /// Custom repo function that returns posts by user with pagination
     Page<Post> findAllByUser(User user, Pageable pageable);
+
+    /// Search posts
+    List<Post> findByTitleContaining(String title);
 }
