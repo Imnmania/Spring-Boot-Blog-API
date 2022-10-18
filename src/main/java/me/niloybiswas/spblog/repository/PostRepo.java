@@ -17,8 +17,11 @@ import java.util.List;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
 
+    /// Without pagination
+    /*
     List<Post> findByUser(User user);
     List<Post> findByCategory(Category category);
+    */
 
     /// This is how you do raw query operation
     /*
@@ -33,6 +36,6 @@ public interface PostRepo extends JpaRepository<Post, Long> {
     /// Custom repo function that returns posts by user with pagination
     Page<Post> findAllByUser(User user, Pageable pageable);
 
-    /// Search posts
-    List<Post> findByTitleContaining(String title);
+    /// Search posts with pagination
+    Page<Post> findByTitleContaining(String title, Pageable page);
 }

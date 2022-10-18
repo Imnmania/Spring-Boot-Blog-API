@@ -46,6 +46,12 @@ public interface PostService {
     );
 
     // search
-    List<PostDTO> searchPosts(String keyword);
+    PaginatedResponseDTO<List<PostDTO>> searchPosts(
+            String keyword,
+            Integer pageSize,
+            Integer pageNumber,
+            String sortBy,
+            String sortDir
+    );
 
 }

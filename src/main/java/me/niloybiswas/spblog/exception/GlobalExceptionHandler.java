@@ -100,7 +100,6 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(PropertyReferenceException.class)
 	public ResponseEntity<Map<String, String>> handlePropertyReferenceException(PropertyReferenceException ex) {
 		Map<String, String> res = new HashMap<>();
-//		res.put("message", "violated database constraint");
 		res.put("message", ex.getMessage().split(":")[0].strip());
 
 		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);

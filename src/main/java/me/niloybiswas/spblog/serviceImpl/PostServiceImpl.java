@@ -226,11 +226,46 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> searchPosts(String keyword) {
+    public PaginatedResponseDTO<List<PostDTO>> searchPosts(
+            String keyword,
+            Integer pageSize,
+            Integer pageNumber,
+            String sortBy,
+            String sortDir
+    ) {
+        ///* Without pagination
+        /*
         List<Post> posts = postRepo.findByTitleContaining(keyword);
         List<PostDTO> postDTOs = posts.stream()
                 .map(post -> modelMapper.map(post, PostDTO.class))
                 .collect(Collectors.toList());
         return postDTOs;
+         */
+
+        ///* With pagination
+        PaginatedResponseDTO<List<PostDTO>> paginatedResponse = new PaginatedResponseDTO<>();
+        if (pageNumber > 0) {
+            int newPageNumber = pageNumber - 1;
+            Sort sort = sortDir.equalsIgnoreCase("desc")
+                    ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
+            Pageable p = PageRequest.of(newPageNumber, pageSize, sort);
+            Page<Post> pagePost = postRepo.findByTitleContaining(keyword, p);
+            List<Post> postList = pagePost.getContent();
+            List<PostDTO> postDTOList = postList.stream()
+                    .map(post -> modelMapper.map(post, PostDTO.class))
+                    .collect(Collectors.toList());
+
+            paginatedResponse.setData(postDTOList);
+            paginatedResponse.setPageSize(pagePost.getSize());
+            paginatedResponse.setPageNumber(pagePost.getNumber() + 1);
+            paginatedResponse.setTotalPages(pagePost.getTotalPages());
+            paginatedResponse.setTotalElements(pagePost.getTotalElements());
+            paginatedResponse.setLastPage(pagePost.isLast());
+
+            return paginatedResponse;
+        } else {
+            throw new ResourceNotFoundException("Posts", "page number", Long.valueOf(pageNumber));
+        }
     }
 }

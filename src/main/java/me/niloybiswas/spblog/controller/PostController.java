@@ -1,5 +1,6 @@
 package me.niloybiswas.spblog.controller;
 
+import me.niloybiswas.spblog.config.AppConstants;
 import me.niloybiswas.spblog.dto.ApiResponseDTO;
 import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
 import me.niloybiswas.spblog.dto.PostDTO;
@@ -38,10 +39,10 @@ public class PostController {
     /// We are using query parameter to get those values which in spring boot is @RequestParam
     @GetMapping("/getAll")
     public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllPosts(
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)  Integer pageNumber,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
     ) {
         PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getAllPosts(pageNumber, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
@@ -56,10 +57,10 @@ public class PostController {
     @GetMapping("/getAllByUserId/{userId}")
     public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllByUserId(
             @PathVariable Long userId,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)  Integer pageNumber,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
     ) {
         PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByUser(pageNumber, pageSize, userId, sortBy, sortDir);
         return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
@@ -68,10 +69,10 @@ public class PostController {
     @GetMapping("/getAllByCategoryId/{categoryId}")
     public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllByCategoryId(
             @PathVariable Long categoryId,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)  Integer pageNumber,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
     ) {
         PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByCategory(pageNumber, pageSize, categoryId, sortBy, sortDir);
         return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
@@ -86,8 +87,15 @@ public class PostController {
 
     //* Search
     @GetMapping("/search/{keyword}")
-    public ResponseEntity<List<PostDTO>> searchPostsByTitle(@PathVariable(name = "keyword") String keyword) {
-        List<PostDTO> postDTOs = this.postService.searchPosts(keyword);
+    public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> searchPostsByTitle(
+            @PathVariable(name = "keyword") String keyword,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
+
+    ) {
+        PaginatedResponseDTO<List<PostDTO>> postDTOs = this.postService.searchPosts(keyword, pageSize, pageNumber, sortBy, sortDir);
         return new ResponseEntity<>(postDTOs, HttpStatus.OK);
     }
 
