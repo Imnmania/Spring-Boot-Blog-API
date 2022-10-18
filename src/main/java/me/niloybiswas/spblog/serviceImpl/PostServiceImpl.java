@@ -47,7 +47,6 @@ public class PostServiceImpl implements PostService {
 
         Post post = modelMapper.map(postDTO, Post.class);
         post.setImageName("default.png");
-//        post.setCreatedDate(new Date());
         post.setCreatedDate(DateUtil.getCurrentDate());
         post.setCategory(category);
         post.setUser(user);
@@ -74,6 +73,13 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new ResourceNotFoundException("Post", "ID", postId));
         postRepo.delete(post); // worked after adding orphanRemoval at Entity and @Transactional
 //        postRepo.deleteById(post.getId());
+    }
+
+    @Override
+    public PostDTO getPostById(Long postId) {
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "ID", postId));
+        return modelMapper.map(post, PostDTO.class);
     }
 
     @Override
@@ -123,17 +129,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO getPostById(Long postId) {
-        Post post = postRepo.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post", "ID", postId));
-        return modelMapper.map(post, PostDTO.class);
-    }
-
-    @Override
     public PaginatedResponseDTO<List<PostDTO>> getPostsByCategory(
             Integer pageNumber,
             Integer pageSize,
-            Long categoryId
+            Long categoryId,
+            String sortBy,
+            String sortDir
     ) {
         Category category = categoryRepo.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
@@ -150,7 +151,10 @@ public class PostServiceImpl implements PostService {
 
         if (pageNumber > 0) {
             int newPageNumber = pageNumber - 1;
-            Pageable p = PageRequest.of(newPageNumber, pageSize);
+            Sort sort = sortDir.equalsIgnoreCase("desc")
+                    ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
+            Pageable p = PageRequest.of(newPageNumber, pageSize, sort);
             Page<Post> pagePosts = postRepo.findAllByCategory(category, p);
             List<Post> posts = pagePosts.getContent();
 
@@ -175,7 +179,9 @@ public class PostServiceImpl implements PostService {
     public PaginatedResponseDTO<List<PostDTO>> getPostsByUser(
             Integer pageNumber,
             Integer pageSize,
-            Long userId
+            Long userId,
+            String sortBy,
+            String sortDir
     ) {
         final User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "ID", userId));
@@ -192,7 +198,10 @@ public class PostServiceImpl implements PostService {
 
         if (pageNumber > 0) {
             int newPageNumber = pageNumber - 1;
-            Pageable p = PageRequest.of(newPageNumber, pageSize);
+            Sort sort = sortDir.equalsIgnoreCase("desc")
+                    ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
+            Pageable p = PageRequest.of(newPageNumber, pageSize, sort);
             Page<Post> pagePosts = postRepo.findAllByUser(user, p);
             List<Post> posts = pagePosts.getContent();
             List<PostDTO> postDTOs = posts.stream()

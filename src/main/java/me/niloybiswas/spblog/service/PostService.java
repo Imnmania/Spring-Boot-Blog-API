@@ -31,14 +31,18 @@ public interface PostService {
     PaginatedResponseDTO<List<PostDTO>> getPostsByCategory(
             Integer pageNumber,
             Integer pageSize,
-            Long categoryId
+            Long categoryId,
+            String sortBy,
+            String sortDir
     );
 
     // get all by user
     PaginatedResponseDTO<List<PostDTO>> getPostsByUser(
             Integer pageNumber,
             Integer pageSize,
-            Long userId
+            Long userId,
+            String sortBy,
+            String sortDir
     );
 
     // search

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -93,5 +94,16 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
 		
 	}
-	
+
+	///* Query Parameter exception for wrong information
+	//PropertyReferenceException
+	@ExceptionHandler(PropertyReferenceException.class)
+	public ResponseEntity<Map<String, String>> handlePropertyReferenceException(PropertyReferenceException ex) {
+		Map<String, String> res = new HashMap<>();
+//		res.put("message", "violated database constraint");
+		res.put("message", ex.getMessage().split(":")[0].strip());
+
+		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+
+	}
 }

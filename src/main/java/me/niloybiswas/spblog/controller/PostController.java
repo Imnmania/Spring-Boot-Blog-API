@@ -57,9 +57,11 @@ public class PostController {
     public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllByUserId(
             @PathVariable Long userId,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
     ) {
-        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByUser(pageNumber, pageSize, userId);
+        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByUser(pageNumber, pageSize, userId, sortBy, sortDir);
         return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
     }
 
@@ -67,9 +69,11 @@ public class PostController {
     public ResponseEntity<PaginatedResponseDTO<List<PostDTO>>> getAllByCategoryId(
             @PathVariable Long categoryId,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false)  Integer pageNumber,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
     ) {
-        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByCategory(pageNumber, pageSize, categoryId);
+        PaginatedResponseDTO<List<PostDTO>> paginatedPosts = postService.getPostsByCategory(pageNumber, pageSize, categoryId, sortBy, sortDir);
         return new ResponseEntity<>(paginatedPosts, HttpStatus.OK);
     }
 
