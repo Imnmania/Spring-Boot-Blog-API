@@ -1,6 +1,5 @@
 package me.niloybiswas.spblog.controller;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.niloybiswas.spblog.dto.ApiResponseDTO;
-import me.niloybiswas.spblog.dto.CategoryDTO;
+import me.niloybiswas.spblog.dto.common.ApiResponseDTO;
+import me.niloybiswas.spblog.dto.category.CategoryDTO;
 import me.niloybiswas.spblog.service.CategoryService;
 
 @RestController

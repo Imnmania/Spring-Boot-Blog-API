@@ -1,7 +1,7 @@
 package me.niloybiswas.spblog.serviceImpl;
 
-import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
-import me.niloybiswas.spblog.dto.PostDTO;
+import me.niloybiswas.spblog.dto.common.PaginatedResponseDTO;
+import me.niloybiswas.spblog.dto.post.PostDTO;
 import me.niloybiswas.spblog.entitiy.Category;
 import me.niloybiswas.spblog.entitiy.Post;
 import me.niloybiswas.spblog.entitiy.User;
@@ -45,8 +45,11 @@ public class PostServiceImpl implements PostService {
         Category category = categoryRepo.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
 
+        // TODO: save image from postDTO base64Image to fileServer here
+        //postDTO.getBase64Image();
+
         Post post = modelMapper.map(postDTO, Post.class);
-        post.setImageName("default.png");
+        //post.setImageName("default.png");
         post.setCreatedDate(DateUtil.getCurrentDate());
         post.setCategory(category);
         post.setUser(user);

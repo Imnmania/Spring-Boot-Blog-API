@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.dto;
+package me.niloybiswas.spblog.dto.user;
 
 import java.math.BigInteger;
 

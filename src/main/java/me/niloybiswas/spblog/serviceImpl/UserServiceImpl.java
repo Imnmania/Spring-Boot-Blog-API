@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import me.niloybiswas.spblog.entitiy.User;
 import me.niloybiswas.spblog.exception.ResourceNotFoundException;
-import me.niloybiswas.spblog.dto.UserDTO;
+import me.niloybiswas.spblog.dto.user.UserDTO;
 import me.niloybiswas.spblog.repository.UserRepo;
 import me.niloybiswas.spblog.service.UserService;
 

@@ -1,7 +1,9 @@
 package me.niloybiswas.spblog.entitiy;
 
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -32,5 +34,8 @@ public class User {
 
 	@OneToMany(mappedBy = "user",  orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Post> posts;
+
+	@OneToMany(mappedBy = "user",  orphanRemoval = true, cascade = CascadeType.ALL)
+	private Set<Comment> comments = new HashSet<>();
 	
 }

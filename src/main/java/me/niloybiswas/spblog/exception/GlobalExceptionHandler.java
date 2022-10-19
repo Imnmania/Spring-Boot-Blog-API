@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import me.niloybiswas.spblog.dto.ApiResponseDTO;
+import me.niloybiswas.spblog.dto.common.ApiResponseDTO;
 
 
 @RestControllerAdvice

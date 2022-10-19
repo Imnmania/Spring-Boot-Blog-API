@@ -1,9 +1,8 @@
 package me.niloybiswas.spblog.service;
 
-import java.math.BigInteger;
 import java.util.List;
 
-import me.niloybiswas.spblog.dto.CategoryDTO;
+import me.niloybiswas.spblog.dto.category.CategoryDTO;
 
 public interface CategoryService {
 

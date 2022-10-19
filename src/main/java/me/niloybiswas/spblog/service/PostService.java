@@ -1,7 +1,7 @@
 package me.niloybiswas.spblog.service;
 
-import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
-import me.niloybiswas.spblog.dto.PostDTO;
+import me.niloybiswas.spblog.dto.common.PaginatedResponseDTO;
+import me.niloybiswas.spblog.dto.post.PostDTO;
 
 import java.util.List;
 

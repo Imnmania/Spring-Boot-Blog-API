@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.dto;
+package me.niloybiswas.spblog.dto.common;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

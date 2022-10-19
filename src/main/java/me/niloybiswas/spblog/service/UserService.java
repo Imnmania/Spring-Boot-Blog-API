@@ -1,9 +1,8 @@
 package me.niloybiswas.spblog.service;
 
-import java.math.BigInteger;
 import java.util.List;
 
-import me.niloybiswas.spblog.dto.UserDTO;
+import me.niloybiswas.spblog.dto.user.UserDTO;
 
 public interface UserService {
 

@@ -1,9 +1,9 @@
 package me.niloybiswas.spblog.controller;
 
 import me.niloybiswas.spblog.config.AppConstants;
-import me.niloybiswas.spblog.dto.ApiResponseDTO;
-import me.niloybiswas.spblog.dto.PaginatedResponseDTO;
-import me.niloybiswas.spblog.dto.PostDTO;
+import me.niloybiswas.spblog.dto.common.ApiResponseDTO;
+import me.niloybiswas.spblog.dto.common.PaginatedResponseDTO;
+import me.niloybiswas.spblog.dto.post.PostDTO;
 import me.niloybiswas.spblog.service.FileService;
 import me.niloybiswas.spblog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -142,7 +137,7 @@ public class PostController {
 
     }
 
-    ///* File download
+    ///* File download/serve
     @GetMapping(value = "/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
     public void downloadPostImage(
             @PathVariable("imageName") String imageName,

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import me.niloybiswas.spblog.entitiy.Category;
 import me.niloybiswas.spblog.exception.ResourceNotFoundException;
-import me.niloybiswas.spblog.dto.CategoryDTO;
+import me.niloybiswas.spblog.dto.category.CategoryDTO;
 import me.niloybiswas.spblog.repository.CategoryRepo;
 import me.niloybiswas.spblog.service.CategoryService;
 

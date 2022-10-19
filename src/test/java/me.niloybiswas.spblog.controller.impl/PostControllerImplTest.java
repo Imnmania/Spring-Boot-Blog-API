@@ -1,7 +1,6 @@
 package me.niloybiswas.spblog.controller.impl;
 
 import me.niloybiswas.spblog.controller.impl.PostControllerImpl;
-import me.niloybiswas.spblog.dto.PostDTO;
 import me.niloybiswas.spblog.mapper.PostMapper;
 import me.niloybiswas.spblog.mapper.ReferenceMapper;
 import me.niloybiswas.spblog.service.PostService;
