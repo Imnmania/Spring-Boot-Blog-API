@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
 		
 		String message = ex.getMessage();
 		ApiResponseDTO apiResponseDTO = new ApiResponseDTO(message, false);
-		return new ResponseEntity<ApiResponseDTO>(apiResponseDTO, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(apiResponseDTO, HttpStatus.NOT_FOUND);
 		
 	}
 	
@@ -45,7 +46,7 @@ public class GlobalExceptionHandler {
 			res.put(fieldName, message);
 		});
 		
-		return new ResponseEntity<Map<String, String>>(res, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 		
 	}
 	
@@ -57,7 +58,7 @@ public class GlobalExceptionHandler {
 		res.put("message", ex.getMessage().toString().split(":")[0].strip());
 //		System.out.println(ex.getMessage());
 		
-		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 		
 	}
 	
@@ -69,7 +70,7 @@ public class GlobalExceptionHandler {
 		res.put("message", "there is a mismatch in data type");
 //		res.put("message", ex.getMessage().split(":")[0].strip());
 		
-		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 		
 	}
 	
@@ -81,7 +82,7 @@ public class GlobalExceptionHandler {
 //		res.put("message", "please check your payload data");
 		res.put("message", ex.getMessage().split(":")[0].strip());
 		
-		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 		
 	}
 	
@@ -94,7 +95,7 @@ public class GlobalExceptionHandler {
 		res.put("message", "something is missing, violated db constraint");
 //		res.put("message", ex.getMessage().split(":")[0].strip());
 		
-		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 		
 	}
 
@@ -105,14 +106,22 @@ public class GlobalExceptionHandler {
 		Map<String, String> res = new HashMap<>();
 		res.put("message", ex.getMessage().split(":")[0].strip());
 
-		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 
 	}
 
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<Map<String, Object>> handleBadCredentialsException(BadCredentialsException ex) {
 		Map<String, Object> res = new HashMap<>();
-		res.put("message123123123", ex.getMessage().split(":")[0].strip());
+		res.put("message", ex.getMessage().split(":")[0].strip());
+
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(InternalAuthenticationServiceException.class)
+	public ResponseEntity<Map<String, Object>> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("message", ex.getMessage().split(":")[0].strip());
 
 		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 	}
