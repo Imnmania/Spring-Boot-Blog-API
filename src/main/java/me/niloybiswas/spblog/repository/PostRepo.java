@@ -37,5 +37,5 @@ public interface PostRepo extends JpaRepository<Post, Long> {
     Page<Post> findAllByUser(User user, Pageable pageable);
 
     /// Search posts with pagination
-    Page<Post> findByTitleContaining(String title, Pageable page);
+    Page<Post> findByTitleContaining(String title, Pageable pageable);
 }

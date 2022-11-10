@@ -8,6 +8,7 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,7 +18,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import me.niloybiswas.spblog.dto.common.ApiResponseDTO;
 
-
+/**
+ * This is a global exception handler
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	
@@ -104,5 +107,13 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<Map<String,String>>(res, HttpStatus.BAD_REQUEST);
 
+	}
+
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<Map<String, Object>> handleBadCredentialsException(BadCredentialsException ex) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("message123123123", ex.getMessage().split(":")[0].strip());
+
+		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 	}
 }

@@ -1,7 +1,5 @@
 package me.niloybiswas.spblog.dto.category;
 
-import java.math.BigInteger;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
