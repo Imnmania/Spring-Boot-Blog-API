@@ -3,9 +3,15 @@ package me.niloybiswas.spblog.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import me.niloybiswas.spblog.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +19,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class JwtTokenHelper {
 
@@ -23,8 +31,11 @@ public class JwtTokenHelper {
     private final String secret;
 
     @Autowired
-    public JwtTokenHelper(@Value("${jwt.validity}") Long jwt_token_validity, @Value("${jwt.secret}") String secret) {
-        JWT_TOKEN_VALIDITY = jwt_token_validity;
+    public JwtTokenHelper(
+            @Value("${jwt.validity}") Long jwt_token_validity,
+            @Value("${jwt.secret}") String secret
+    ) {
+        this.JWT_TOKEN_VALIDITY = jwt_token_validity;
         this.secret = secret;
     }
 
@@ -43,8 +54,13 @@ public class JwtTokenHelper {
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
+        try {
+            final Claims claims = getAllClaimsFromToken(token);
+            return claimsResolver.apply(claims);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return null;
+        }
     }
 
     /*
@@ -67,7 +83,8 @@ public class JwtTokenHelper {
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        // add claims to your usage
+        // add additional payload to your token
+        claims.put("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

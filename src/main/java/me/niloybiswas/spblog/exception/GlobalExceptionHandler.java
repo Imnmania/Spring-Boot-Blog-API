@@ -129,11 +129,11 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(io.jsonwebtoken.SignatureException.class)
-	public ResponseEntity<Map<String, Object>> handleSignatureException(io.jsonwebtoken.SignatureException ex) {
+	@ExceptionHandler(InvalidTokenException.class)
+	public ResponseEntity<Map<String, Object>> handleInvalidTokenException(InvalidTokenException ex) {
 		Map<String, Object> res = new HashMap<>();
 		res.put("message", ex.getMessage().split(":")[0].strip());
 
-		return new ResponseEntity<>(res, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(res, HttpStatus.FORBIDDEN);
 	}
 }

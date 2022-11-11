@@ -23,7 +23,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         Map<String, String> error = new HashMap<>();
-        error.put("message", "Access Denied");
+//        error.put("message", "Access Denied");
+        error.put("message", authException.getMessage());
         new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
 }
