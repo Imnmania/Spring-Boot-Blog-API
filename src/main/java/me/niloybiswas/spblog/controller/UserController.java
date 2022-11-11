@@ -1,12 +1,18 @@
 package me.niloybiswas.spblog.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
+import me.niloybiswas.spblog.dto.user.UserResponseDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,16 +27,23 @@ import me.niloybiswas.spblog.dto.user.UserDTO;
 import me.niloybiswas.spblog.service.UserService;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 	
 	@Autowired
-	private UserService userService;
-	
+	private final UserService userService;
+
+	@Autowired
+	private final PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private final ModelMapper modelMapper;
+
 	// Create User
 	@PostMapping("/create")
 	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
-		
+		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		UserDTO createdUserDTO = this.userService.createUser(userDTO);
 		return new ResponseEntity<UserDTO>(createdUserDTO, HttpStatus.CREATED);
 		
@@ -59,17 +72,22 @@ public class UserController {
 	
 	// Get User
 	@GetMapping("/getAll")
-	public ResponseEntity<List<UserDTO>> getAllUsers() {
-		
-		return new ResponseEntity<List<UserDTO>>(this.userService.getAllUsers(), HttpStatus.OK);
+	public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+		List<UserDTO> users = this.userService.getAllUsers();
+		List<UserResponseDTO> usersResponse = users.stream()
+				.map(userDTO -> modelMapper.map(userDTO, UserResponseDTO.class))
+				.collect(Collectors.toList());
+		return new ResponseEntity<>(usersResponse, HttpStatus.OK);
 		
 	}
 	
 	// Get User by ID
 	@GetMapping("/getById/{userId}")
-	public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
+	public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long userId) {
+		UserDTO user = this.userService.getUserById(userId);
+		UserResponseDTO response = modelMapper.map(user, UserResponseDTO.class);
 			
-		return new ResponseEntity<UserDTO>(this.userService.getUserById(userId), HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 			
 	}
 	

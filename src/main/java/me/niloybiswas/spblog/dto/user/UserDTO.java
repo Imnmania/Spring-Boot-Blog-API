@@ -1,15 +1,19 @@
 package me.niloybiswas.spblog.dto.user;
 
 import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.niloybiswas.spblog.entitiy.Role;
 
 @NoArgsConstructor
 @Getter
@@ -34,4 +38,5 @@ public class UserDTO {
 	@NotEmpty
 	private String about;
 
+	private Set<Role> roles;
 }
