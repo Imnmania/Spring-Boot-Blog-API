@@ -1,6 +1,5 @@
 package me.niloybiswas.spblog.entitiy;
 
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;

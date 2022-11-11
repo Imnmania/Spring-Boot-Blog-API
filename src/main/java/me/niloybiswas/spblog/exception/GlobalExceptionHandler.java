@@ -1,8 +1,10 @@
 package me.niloybiswas.spblog.exception;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.jsonwebtoken.SignatureException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -124,5 +127,13 @@ public class GlobalExceptionHandler {
 		res.put("message", ex.getMessage().split(":")[0].strip());
 
 		return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(io.jsonwebtoken.SignatureException.class)
+	public ResponseEntity<Map<String, Object>> handleSignatureException(io.jsonwebtoken.SignatureException ex) {
+		Map<String, Object> res = new HashMap<>();
+		res.put("message", ex.getMessage().split(":")[0].strip());
+
+		return new ResponseEntity<>(res, HttpStatus.UNAUTHORIZED);
 	}
 }
