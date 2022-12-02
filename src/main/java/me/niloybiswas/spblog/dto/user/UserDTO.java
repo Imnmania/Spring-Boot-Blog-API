@@ -1,6 +1,8 @@
 package me.niloybiswas.spblog.dto.user;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,5 +40,5 @@ public class UserDTO {
 	@NotEmpty
 	private String about;
 
-	private Set<Role> roles;
+	private Set<Role> roles = new HashSet<>();
 }

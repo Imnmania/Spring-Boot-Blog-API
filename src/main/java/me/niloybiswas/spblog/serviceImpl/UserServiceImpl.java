@@ -3,8 +3,11 @@ package me.niloybiswas.spblog.serviceImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.niloybiswas.spblog.entitiy.Role;
+import me.niloybiswas.spblog.repository.RoleRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import me.niloybiswas.spblog.entitiy.User;
@@ -22,6 +25,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private RoleRepo roleRepo;
 
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
@@ -73,8 +82,19 @@ public class UserServiceImpl implements UserService {
 		
 		this.userRepo.delete(user);
 	}
-	
-	
+
+	@Override
+	public UserDTO registerUser(UserDTO userDTO) {
+		User user = this.modelMapper.map(userDTO, User.class);
+		// encode password
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		// role assign
+		Role role = this.roleRepo.findByName("ROLE_NORMAL");
+		user.getRoles().add(role);
+		User newUser = this.userRepo.save(user);
+		return this.modelMapper.map(user, UserDTO.class);
+	}
+
 	// Converting dto to entity
 	private User dtoToUser(UserDTO userDTO) {
 		/* conversion raw */

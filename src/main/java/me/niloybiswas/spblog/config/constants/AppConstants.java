@@ -1,4 +1,4 @@
-package me.niloybiswas.spblog.config;
+package me.niloybiswas.spblog.config.constants;
 
 public class AppConstants {
 

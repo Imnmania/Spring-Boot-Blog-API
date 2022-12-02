@@ -1,25 +1,20 @@
 package me.niloybiswas.spblog.entitiy;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
+@Data
 @NoArgsConstructor
-@Getter 
-@Setter
+@AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 	
@@ -42,7 +37,7 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user",  orphanRemoval = true, cascade = CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<>();
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "user_role",
 			joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"),

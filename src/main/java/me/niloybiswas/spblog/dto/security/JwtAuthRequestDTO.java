@@ -1,9 +1,9 @@
-package me.niloybiswas.spblog.security;
+package me.niloybiswas.spblog.dto.security;
 
 import lombok.Data;
 
 @Data
-public class JwtAuthRequest {
+public class JwtAuthRequestDTO {
     private String username;
     private String password;
 }

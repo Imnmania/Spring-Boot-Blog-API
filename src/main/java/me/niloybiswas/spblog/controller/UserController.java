@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,6 +72,7 @@ public class UserController {
 	
 	
 	// Get User
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/getAll")
 	public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
 		List<UserDTO> users = this.userService.getAllUsers();
@@ -89,6 +91,11 @@ public class UserController {
 			
 		return new ResponseEntity<>(response, HttpStatus.OK);
 			
+	}
+
+	@PostMapping("/addRoleToUser")
+	public ResponseEntity<?> addRoleToUser() {
+		return  null;
 	}
 	
 	

@@ -1,6 +1,6 @@
 package me.niloybiswas.spblog.controller;
 
-import me.niloybiswas.spblog.config.AppConstants;
+import me.niloybiswas.spblog.config.constants.AppConstants;
 import me.niloybiswas.spblog.dto.common.ApiResponseDTO;
 import me.niloybiswas.spblog.dto.common.PaginatedResponseDTO;
 import me.niloybiswas.spblog.dto.post.PostDTO;

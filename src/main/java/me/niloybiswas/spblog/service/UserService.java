@@ -21,4 +21,7 @@ public interface UserService {
 	// delete
 	void deleteUser(Long userId);
 
+	// register user
+	UserDTO registerUser(UserDTO userDTO);
+
 }
