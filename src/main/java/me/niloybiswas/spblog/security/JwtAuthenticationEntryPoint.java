@@ -18,7 +18,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException
+    ) throws IOException, ServletException {
 //        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied!");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(APPLICATION_JSON_VALUE);

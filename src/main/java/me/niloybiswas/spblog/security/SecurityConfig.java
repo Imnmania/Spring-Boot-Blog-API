@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(this.customUserDetailService)
-                .passwordEncoder(passwordEncoder);
+                .passwordEncoder(this.passwordEncoder);
     }
 
     @Bean

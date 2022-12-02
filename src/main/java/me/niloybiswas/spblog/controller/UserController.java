@@ -45,7 +45,7 @@ public class UserController {
 	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
 		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		UserDTO createdUserDTO = this.userService.createUser(userDTO);
-		return new ResponseEntity<UserDTO>(createdUserDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
 		
 	}
 	
@@ -55,7 +55,7 @@ public class UserController {
 		// if the path variable and function params have different name, use custom name with () after @Pathvariable
 		
 		UserDTO updatedUserDTO = this.userService.updateUser(userDTO, userId);
-		return new ResponseEntity<UserDTO>(updatedUserDTO, HttpStatus.OK);
+		return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
 		
 	}
 	
@@ -65,7 +65,7 @@ public class UserController {
 		
 		this.userService.deleteUser(userId);
 //		return new ResponseEntity<?>(Map.of("message", "User deleted successfully!"), HttpStatus.OK);
-		return new ResponseEntity<ApiResponseDTO>(new ApiResponseDTO("User deleted successfully", true), HttpStatus.OK);
+		return new ResponseEntity<>(new ApiResponseDTO("User deleted successfully", true), HttpStatus.OK);
 		
 	}
 	
