@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 import me.niloybiswas.spblog.security.CustomUserDetailService;
 import me.niloybiswas.spblog.security.JwtAuthenticationEntryPoint;
 import me.niloybiswas.spblog.security.JwtAuthenticationFilter;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +18,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -89,8 +89,8 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
 
-    /*@Bean
-    public FilterRegistration corsFilter() {
+    @Bean
+    public FilterRegistrationBean corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -99,16 +99,18 @@ public class SecurityConfig {
         corsConfiguration.addAllowedHeader("Authorization");
         corsConfiguration.addAllowedHeader("Content-Type");
         corsConfiguration.addAllowedHeader("Accept");
-        corsConfiguration.addAllowedHeader("POST");
-        corsConfiguration.addAllowedHeader("GET");
-        corsConfiguration.addAllowedHeader("DELETE");
-        corsConfiguration.addAllowedHeader("PUT");
-        corsConfiguration.addAllowedHeader("OPTIONS");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.addAllowedMethod("PUT");
+        corsConfiguration.addAllowedMethod("OPTIONS");
         corsConfiguration.setMaxAge(3600L);
 
         source.registerCorsConfiguration("/**", corsConfiguration);
 
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-    }*/
+        bean.setOrder(-110);
+        return bean;
+    }
 
 }

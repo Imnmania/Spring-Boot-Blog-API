@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenHelper {
 
-
     private final Long JWT_TOKEN_VALIDITY;
 
     private final String secret;
