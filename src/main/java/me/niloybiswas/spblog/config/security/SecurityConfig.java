@@ -17,13 +17,25 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @AllArgsConstructor
+@EnableWebMvc
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @SuppressWarnings("deprecation")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    public static final String[] PUBLIC_URLS = {
+            "/api/v1/auth/login",
+            "/api/v1/auth/register",
+            "/v3/api-docs",
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+    };
 
     @Autowired
     private final CustomUserDetailService customUserDetailService;
@@ -44,9 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/v1/auth/login").permitAll()
-                .antMatchers("/api/v1/auth/register").permitAll()
-//                .antMatchers(HttpMethod.GET).permitAll()
+//                .antMatchers("/api/v1/auth/login").permitAll()
+//                .antMatchers("/api/v1/auth/register").permitAll()
+//                .antMatchers("/v3/api-docs").permitAll()
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers(PUBLIC_URLS).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
